@@ -3,7 +3,8 @@
   "scripts": {
     "test:type-check": "tsc --noEmit",
     "test:lint": "eslint . --ext .ts",
-    "test": "npm run test:type-check && npm run test:lint",
+    "test:unit": "jest",
+    "test": "npm run test:type-check && npm run test:lint && npm run test:unit",
     "build:clean": "rm -rf dist",
     "build:code": "parcel build --no-source-maps src/devtools/index.html src/devtools/panel/index.html",
     "build:assets": "cp -r assets/. dist",
@@ -15,8 +16,11 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
+    "@types/jest": "^25.1.4",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "jest": "^25.2.4",
+    "ts-jest": "^25.3.0"
   }
 }
