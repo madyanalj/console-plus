@@ -1,3 +1,15 @@
 {
-  "private": true
+  "private": true,
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "build:clean": "rm -rf dist",
+    "build:code": "parcel build --no-source-maps src/devtools/index.html src/devtools/panel/index.html",
+    "build:assets": "cp -r assets/. dist",
+    "build": "npm run build:clean && npm run build:code && npm run build:assets"
+  },
+  "dependencies": {
+    "@types/chrome": "0.0.103",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.8.3"
+  }
 }
