@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="run type-check" />
+      <option name="arguments" value="run build" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="*" />
       <option name="immediateSync" value="true" />
-      <option name="name" value="type-check" />
+      <option name="name" value="build" />
       <option name="output" value="" />
       <option name="outputFilters">
         <array />
@@ -22,13 +22,13 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="run build" />
+      <option name="arguments" value="run test" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="*" />
       <option name="immediateSync" value="true" />
-      <option name="name" value="build" />
+      <option name="name" value="test" />
       <option name="output" value="" />
       <option name="outputFilters">
         <array />
