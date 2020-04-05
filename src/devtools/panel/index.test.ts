@@ -11,7 +11,9 @@ test('index', async () => {
   createElementSelectorMock.mockReturnValueOnce({ getElementById });
 
   const editorElement = { id: 'editor' } as HTMLDivElement;
+  const runButtonElement = { id: 'run-button' } as HTMLButtonElement;
   getElementById.mockReturnValueOnce(editorElement);
+  getElementById.mockReturnValueOnce(runButtonElement);
 
   await import('./index');
 
