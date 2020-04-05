@@ -6,12 +6,14 @@
     "test:unit": "jest",
     "test": "npm run test:type-check && npm run test:lint && npm run test:unit",
     "build:clean": "rm -rf dist",
+    "build:monaco": "sh ./build_workers.sh",
     "build:code": "parcel build --no-source-maps src/devtools/index.html src/devtools/panel/index.html",
     "build:assets": "cp -r assets/. dist",
-    "build": "npm run build:clean && npm run build:code && npm run build:assets"
+    "build": "npm run build:clean && npm run build:monaco && npm run build:code && npm run build:assets"
   },
   "dependencies": {
     "@types/chrome": "0.0.103",
+    "monaco-editor": "^0.20.0",
     "parcel-bundler": "^1.12.4",
     "typescript": "^3.8.3"
   },
