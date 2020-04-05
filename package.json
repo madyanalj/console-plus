@@ -16,11 +16,11 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^25.2.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "eslint": "^6.8.0",
-    "jest": "^25.2.4",
-    "ts-jest": "^25.3.0"
+    "jest": "^25.2.7",
+    "ts-jest": "^25.3.1"
   }
 }
