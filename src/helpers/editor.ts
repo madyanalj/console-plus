@@ -25,6 +25,7 @@ export function createEditor(container: HTMLDivElement): editor.IStandaloneCodeE
     ].join('\n'),
     language: 'typescript',
     theme: 'vs-dark',
+    minimap: { enabled: false },
   });
 }
 
