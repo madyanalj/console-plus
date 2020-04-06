@@ -10,5 +10,5 @@ const editorInstance = createEditor(getElementById('editor'));
 
 getElementById('run-button').onclick = (): void => {
   getRunnableJavaScript(editorInstance)
-    .then(console.log);
+    .then(chrome.devtools.inspectedWindow.eval);
 };

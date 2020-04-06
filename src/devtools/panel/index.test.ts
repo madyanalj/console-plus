@@ -1,21 +1,44 @@
+import { editor } from 'monaco-editor';
 import { createElementSelector } from '../../helpers/document';
-import { createEditor } from '../../helpers/editor';
+import { createEditor, getRunnableJavaScript } from '../../helpers/editor';
 
 jest.mock('../../helpers/document');
 jest.mock('../../helpers/editor');
 
 test('index', async () => {
-  const createElementSelectorMock = createElementSelector as jest.MockedFunction<typeof createElementSelector>;
-
-  const getElementById: jest.MockedFunction<ReturnType<typeof createElementSelector>['getElementById']> = jest.fn();
-  createElementSelectorMock.mockReturnValueOnce({ getElementById });
+  globalThis.chrome = {
+    devtools: {
+      inspectedWindow: {
+        eval: jest.fn(),
+      },
+    },
+  } as unknown as typeof chrome;
 
   const editorElement = { id: 'editor' } as HTMLDivElement;
   const runButtonElement = { id: 'run-button' } as HTMLButtonElement;
-  getElementById.mockReturnValueOnce(editorElement);
-  getElementById.mockReturnValueOnce(runButtonElement);
+
+  const getElementById = (jest.fn() as jest.MockedFunction<ReturnType<typeof createElementSelector>['getElementById']>)
+    .mockReturnValueOnce(editorElement)
+    .mockReturnValueOnce(runButtonElement);
+
+  (createElementSelector as jest.MockedFunction<typeof createElementSelector>)
+    .mockReturnValueOnce({ getElementById });
+
+  const instance = { id: 'editor-instance' } as unknown as editor.IStandaloneCodeEditor;
+  (createEditor as jest.MockedFunction<typeof createEditor>)
+    .mockReturnValueOnce(instance);
+
+  const code = 'some.code()';
+  (getRunnableJavaScript as jest.MockedFunction<typeof getRunnableJavaScript>)
+    .mockResolvedValueOnce(code);
 
   await import('./index');
 
   expect(createEditor).toHaveBeenCalledWith(editorElement);
+  expect(runButtonElement.onclick).toBeDefined();
+
+  await runButtonElement.onclick?.({} as MouseEvent);
+
+  expect(getRunnableJavaScript).toHaveBeenCalledWith(instance);
+  expect(chrome.devtools.inspectedWindow.eval).toHaveBeenCalledWith(code);
 });
