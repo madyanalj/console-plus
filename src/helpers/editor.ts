@@ -1,4 +1,4 @@
-import { editor, languages } from 'monaco-editor';
+import { editor } from 'monaco-editor';
 
 declare global {
   interface Window {
@@ -27,14 +27,4 @@ export function createEditor(container: HTMLDivElement): editor.IStandaloneCodeE
     theme: 'vs-dark',
     minimap: { enabled: false },
   });
-}
-
-export function getRunnableJavaScript(editorInstance: editor.IStandaloneCodeEditor): Promise<string> {
-  const model = editorInstance.getModel();
-  if (!model) throw new Error('editorInstance passed must have a model');
-
-  return languages.typescript.getTypeScriptWorker()
-    .then((worker) => worker(model.uri))
-    .then(({ getEmitOutput }) => getEmitOutput(model.uri.toString()))
-    .then(({ outputFiles }: languages.typescript.EmitOutput) => outputFiles[0].text);
 }

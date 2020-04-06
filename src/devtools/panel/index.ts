@@ -1,5 +1,6 @@
+import { getRunnableJavaScript } from '../../helpers/compiler';
 import { createElementSelector } from '../../helpers/document';
-import { createEditor, getRunnableJavaScript } from '../../helpers/editor';
+import { createEditor } from '../../helpers/editor';
 
 const { getElementById } = createElementSelector<{
   editor: HTMLDivElement;

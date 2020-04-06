@@ -1,7 +1,9 @@
 import { editor } from 'monaco-editor';
+import { getRunnableJavaScript } from '../../helpers/compiler';
 import { createElementSelector } from '../../helpers/document';
-import { createEditor, getRunnableJavaScript } from '../../helpers/editor';
+import { createEditor } from '../../helpers/editor';
 
+jest.mock('../../helpers/compiler');
 jest.mock('../../helpers/document');
 jest.mock('../../helpers/editor');
 
