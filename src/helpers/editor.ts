@@ -1,4 +1,5 @@
-import { editor } from 'monaco-editor';
+import { editor, KeyCode, KeyMod } from 'monaco-editor';
+import { getRunnableJavaScript } from './compiler';
 
 declare global {
   interface Window {
@@ -8,16 +9,21 @@ declare global {
   }
 }
 
-export const TYPESCRIPT_WORKER_URL = '../ts.worker.js';
+export enum EditorAction {
+  RunSnippet = 'run-snippet',
+}
 
-export function createEditor(container: HTMLDivElement): editor.IStandaloneCodeEditor {
+export function createEditor(
+  container: HTMLDivElement,
+  runCodeCallback: (code: string) => void,
+): editor.IStandaloneCodeEditor {
   if (!self.MonacoEnvironment) {
     self.MonacoEnvironment = {
-      getWorkerUrl: (): string => TYPESCRIPT_WORKER_URL,
+      getWorkerUrl: (): string => '../ts.worker.js',
     };
   }
 
-  return editor.create(container, {
+  const instance = editor.create(container, {
     value: [
       'function x(): void {',
       '  console.log("Hello world!");',
@@ -27,4 +33,17 @@ export function createEditor(container: HTMLDivElement): editor.IStandaloneCodeE
     theme: 'vs-dark',
     minimap: { enabled: false },
   });
+
+  instance.addAction({
+    id: EditorAction.RunSnippet,
+    label: 'Run Snippet',
+    keybindings: [KeyMod.CtrlCmd | KeyCode.Enter],
+    contextMenuGroupId: 'run',
+    contextMenuOrder: 0,
+    run(editor): void {
+      getRunnableJavaScript(editor).then(runCodeCallback);
+    },
+  });
+
+  return instance;
 }

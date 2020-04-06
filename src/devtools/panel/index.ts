@@ -1,15 +1,13 @@
-import { getRunnableJavaScript } from '../../helpers/compiler';
 import { createElementSelector } from '../../helpers/document';
-import { createEditor } from '../../helpers/editor';
+import { createEditor, EditorAction } from '../../helpers/editor';
 
 const { getElementById } = createElementSelector<{
   editor: HTMLDivElement;
   'run-button': HTMLButtonElement;
 }>();
 
-const editorInstance = createEditor(getElementById('editor'));
+const editorInstance = createEditor(getElementById('editor'), chrome.devtools.inspectedWindow.eval);
 
-getElementById('run-button').onclick = (): void => {
-  getRunnableJavaScript(editorInstance)
-    .then(chrome.devtools.inspectedWindow.eval);
+getElementById('run-button').onclick = async (): Promise<void> => {
+  await editorInstance.getAction(EditorAction.RunSnippet).run();
 };

@@ -1,9 +1,7 @@
 import { editor } from 'monaco-editor';
-import { getRunnableJavaScript } from '../../helpers/compiler';
 import { createElementSelector } from '../../helpers/document';
 import { createEditor } from '../../helpers/editor';
 
-jest.mock('../../helpers/compiler');
 jest.mock('../../helpers/document');
 jest.mock('../../helpers/editor');
 
@@ -26,21 +24,17 @@ test('index', async () => {
   (createElementSelector as jest.MockedFunction<typeof createElementSelector>)
     .mockReturnValueOnce({ getElementById });
 
-  const instance = { id: 'editor-instance' } as unknown as editor.IStandaloneCodeEditor;
+  const run = jest.fn();
+  const instance = { getAction: jest.fn(() => ({ run })) } as unknown as editor.IStandaloneCodeEditor;
   (createEditor as jest.MockedFunction<typeof createEditor>)
     .mockReturnValueOnce(instance);
 
-  const code = 'some.code()';
-  (getRunnableJavaScript as jest.MockedFunction<typeof getRunnableJavaScript>)
-    .mockResolvedValueOnce(code);
-
   await import('./index');
 
-  expect(createEditor).toHaveBeenCalledWith(editorElement);
+  expect(createEditor).toHaveBeenCalledWith(editorElement, expect.any(Function));
   expect(runButtonElement.onclick).toBeDefined();
 
   await runButtonElement.onclick?.({} as MouseEvent);
 
-  expect(getRunnableJavaScript).toHaveBeenCalledWith(instance);
-  expect(chrome.devtools.inspectedWindow.eval).toHaveBeenCalledWith(code);
+  expect(run).toHaveBeenCalled();
 });

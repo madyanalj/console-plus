@@ -5,3 +5,6 @@ export const languages = {
     getTypeScriptWorker: jest.fn(),
   },
 };
+
+export const KeyMod = {};
+export const KeyCode = {};
