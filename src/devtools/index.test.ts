@@ -1,3 +1,13 @@
-test('adds 1 + 2 to equal 3', () => {
-  expect(1 + 2).toBe(3);
+test('index', async () => {
+  globalThis.chrome = {
+    devtools: {
+      panels: {
+        create: jest.fn(),
+      },
+    },
+  } as unknown as typeof chrome;
+
+  await import('./index');
+
+  expect(chrome.devtools.panels.create).toHaveBeenCalled();
 });
