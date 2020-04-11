@@ -1,9 +1,9 @@
 import { editor } from 'monaco-editor';
-import { createElementSelector } from '../../helpers/document';
 import { createEditor } from '../../helpers/editor';
+import { getElementById } from './document';
 
-jest.mock('../../helpers/document');
 jest.mock('../../helpers/editor');
+jest.mock('./document');
 
 test('index', async () => {
   globalThis.chrome = {
@@ -17,12 +17,9 @@ test('index', async () => {
   const editorElement = { id: 'editor' } as HTMLDivElement;
   const runButtonElement = { id: 'run-button' } as HTMLButtonElement;
 
-  const getElementById = (jest.fn() as jest.MockedFunction<ReturnType<typeof createElementSelector>['getElementById']>)
+  (getElementById as jest.MockedFunction<typeof getElementById>)
     .mockReturnValueOnce(editorElement)
     .mockReturnValueOnce(runButtonElement);
-
-  (createElementSelector as jest.MockedFunction<typeof createElementSelector>)
-    .mockReturnValueOnce({ getElementById });
 
   const run = jest.fn();
   const instance = { getAction: jest.fn(() => ({ run })) } as unknown as editor.IStandaloneCodeEditor;
@@ -32,9 +29,9 @@ test('index', async () => {
   await import('./index');
 
   expect(createEditor).toHaveBeenCalledWith(editorElement, expect.any(Function));
-  expect(runButtonElement.onclick).toBeDefined();
 
-  await runButtonElement.onclick?.({} as MouseEvent);
+  if (!runButtonElement.onclick) fail();
+  await runButtonElement.onclick({} as MouseEvent);
 
   expect(run).toHaveBeenCalled();
 });

@@ -1,30 +1,30 @@
 import { createElementSelector } from './document';
 
 describe('createElementSelector', () => {
-  let nativeGetElementById: jest.SpiedFunction<typeof document.getElementById>;
+  let getElementById: jest.SpiedFunction<typeof document.getElementById>;
   let elementSelector: ReturnType<typeof createElementSelector>;
 
   beforeEach(() => {
-    nativeGetElementById = jest.spyOn(document, 'getElementById');
+    getElementById = jest.spyOn(document, 'getElementById').mockClear();
     elementSelector = createElementSelector<{ 'foo-button': HTMLButtonElement }>();
   });
 
   test('should, when element with matching ID exists, return the element', () => {
     const element = {} as HTMLButtonElement;
-    nativeGetElementById.mockReturnValueOnce(element);
+    getElementById.mockReturnValue(element);
 
-    const result = elementSelector.getElementById('foo-button');
+    const result = elementSelector('foo-button');
 
     expect(result).toBe(element);
-    expect(nativeGetElementById).toHaveBeenCalledWith('foo-button');
+    expect(getElementById).toHaveBeenCalledWith('foo-button');
   });
 
   test('should, when no element with matching ID exists, throw error', () => {
-    nativeGetElementById.mockReturnValueOnce(null);
+    getElementById.mockReturnValueOnce(null);
 
     expect(() => {
-      elementSelector.getElementById('foo-button');
+      elementSelector('foo-button');
     }).toThrow('Missing element with id="foo-button"');
-    expect(nativeGetElementById).toHaveBeenCalledWith('foo-button');
+    expect(getElementById).toHaveBeenCalledWith('foo-button');
   });
 });
