@@ -1,5 +1,5 @@
-import { editor, KeyCode, KeyMod } from 'monaco-editor';
-import { getRunnableJavaScript } from './compiler';
+import { editor } from 'monaco-editor';
+import { createRunSnippetAction } from './action';
 
 declare global {
   interface Window {
@@ -7,10 +7,6 @@ declare global {
       getWorkerUrl(moduleId: string, label: string): string;
     };
   }
-}
-
-export enum EditorAction {
-  RunSnippet = 'run-snippet',
 }
 
 export function createEditor(
@@ -34,16 +30,7 @@ export function createEditor(
     minimap: { enabled: false },
   });
 
-  instance.addAction({
-    id: EditorAction.RunSnippet,
-    label: 'Run Snippet',
-    keybindings: [KeyMod.CtrlCmd | KeyCode.Enter],
-    contextMenuGroupId: 'run',
-    contextMenuOrder: 0,
-    run(editor): void {
-      getRunnableJavaScript(editor).then(runCodeCallback);
-    },
-  });
+  instance.addAction(createRunSnippetAction(runCodeCallback));
 
   return instance;
 }

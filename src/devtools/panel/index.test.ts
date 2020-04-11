@@ -1,8 +1,8 @@
 import { editor } from 'monaco-editor';
-import { createEditor } from '../../helpers/editor';
+import { createEditor } from '../../helpers/editor/editor';
 import { getElementById } from './document';
 
-jest.mock('../../helpers/editor');
+jest.mock('../../helpers/editor/editor');
 jest.mock('./document');
 
 test('index', async () => {

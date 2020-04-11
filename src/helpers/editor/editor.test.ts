@@ -1,8 +1,8 @@
 import { editor } from 'monaco-editor';
-import { getRunnableJavaScript } from './compiler';
-import { createEditor, EditorAction } from './editor';
+import { createRunSnippetAction } from './action';
+import { createEditor } from './editor';
 
-jest.mock('./compiler');
+jest.mock('./action');
 
 describe('createEditor', () => {
   let container: HTMLDivElement;
@@ -16,35 +16,33 @@ describe('createEditor', () => {
     runCodeCallback = jest.fn();
     addAction = jest.fn();
     instance = { id: 'editor-instance', addAction } as unknown as editor.IStandaloneCodeEditor;
-    create = (editor.create as jest.MockedFunction<typeof editor.create>).mockReturnValueOnce(instance);
+    create = (editor.create as jest.MockedFunction<typeof editor.create>)
+      .mockReturnValueOnce(instance);
   });
 
   test('should define worker URL', () => {
     createEditor(container, runCodeCallback);
 
-    expect(self.MonacoEnvironment?.getWorkerUrl('module-id', 'label')).toBeDefined();
+    if (!self.MonacoEnvironment) fail();
+    expect(typeof self.MonacoEnvironment.getWorkerUrl('module-id', 'label')).toBe('string');
   });
 
   test('should create editor and return instance', () => {
+    const container = { id: 'container-id' } as HTMLDivElement;
     const result = createEditor(container, runCodeCallback);
 
     expect(result).toBe(instance);
     expect(create).toHaveBeenCalledWith<Parameters<typeof editor.create>>(container, expect.any(Object));
   });
 
-  test('should add RunSnippet action to editor', async () => {
+  test('should add run snippet action to editor passing runCodeCallback', async () => {
+    const descriptor = { id: 'action-id' } as editor.IActionDescriptor;
+    (createRunSnippetAction as jest.MockedFunction<typeof createRunSnippetAction>)
+      .mockReturnValueOnce(descriptor);
+
     createEditor(container, runCodeCallback);
 
-    const runEditor = { id: 'run-editor' } as unknown as editor.ICodeEditor;
-    const code = 'code!';
-    (getRunnableJavaScript as jest.MockedFunction<typeof getRunnableJavaScript>).mockResolvedValueOnce(code);
-
-    const { id, run } = addAction.mock.calls[0][0];
-    expect(id).toBe(EditorAction.RunSnippet);
-
-    await run(runEditor);
-
-    expect(getRunnableJavaScript).toHaveBeenCalledWith(runEditor);
-    expect(runCodeCallback).toHaveBeenCalledWith(code);
+    expect(createRunSnippetAction).toHaveBeenCalledWith<Parameters<typeof createRunSnippetAction>>(runCodeCallback);
+    expect(addAction).toHaveBeenCalledWith<Parameters<typeof addAction>>(descriptor);
   });
 });
