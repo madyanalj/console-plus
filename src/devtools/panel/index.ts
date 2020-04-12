@@ -1,7 +1,13 @@
-import { editor } from 'monaco-editor';
+import { editor, languages } from 'monaco-editor';
+import { getRunnableJavaScript } from '../../helpers/compiler';
+import { createElementSelector } from '../../helpers/document';
 import { createRunSnippetAction } from '../../helpers/editor/action';
 import { EDITOR_OPTIONS, setupMonacoEnvironment } from '../../helpers/editor/editor';
-import { getElementById } from './document';
+
+export const getElementById = createElementSelector<{
+  'editor': HTMLDivElement;
+  'run-button': HTMLButtonElement;
+}>((elementId) => document.getElementById(elementId));
 
 const editorElement = getElementById('editor');
 const runButtonElement = getElementById('run-button');

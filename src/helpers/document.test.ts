@@ -1,30 +1,24 @@
 import { createElementSelector } from './document';
 
 describe('createElementSelector', () => {
-  let getElementById: jest.SpiedFunction<typeof document.getElementById>;
-  let elementSelector: ReturnType<typeof createElementSelector>;
-
-  beforeEach(() => {
-    getElementById = jest.spyOn(document, 'getElementById').mockClear();
-    elementSelector = createElementSelector<{ 'foo-button': HTMLButtonElement }>();
-  });
-
   test('should, when element with matching ID exists, return the element', () => {
-    const element = {} as HTMLButtonElement;
-    getElementById.mockReturnValue(element);
+    const expected = {} as HTMLButtonElement;
+    const getElementById: typeof document.getElementById = () => expected;
 
-    const result = elementSelector('foo-button');
+    const selector = createElementSelector<{
+      'foo-button': HTMLButtonElement;
+    }>(getElementById);
 
-    expect(result).toBe(element);
-    expect(getElementById).toHaveBeenCalledWith('foo-button');
+    expect(selector('foo-button')).toBe(expected);
   });
 
   test('should, when no element with matching ID exists, throw error', () => {
-    getElementById.mockReturnValueOnce(null);
+    const getElementById: typeof document.getElementById = () => null;
 
-    expect(() => {
-      elementSelector('foo-button');
-    }).toThrow('Missing element with id="foo-button"');
-    expect(getElementById).toHaveBeenCalledWith('foo-button');
+    const selector = createElementSelector<{
+      'foo-button': HTMLButtonElement;
+    }>(getElementById);
+
+    expect(() => selector('foo-button')).toThrow('Missing element with id="foo-button"');
   });
 });
