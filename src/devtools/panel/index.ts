@@ -1,8 +1,15 @@
-import { EditorAction } from '../../helpers/editor/action';
-import { createEditor } from '../../helpers/editor/editor';
+import { editor } from 'monaco-editor';
+import { createRunSnippetAction } from '../../helpers/editor/action';
+import { EDITOR_OPTIONS, setupMonacoEnvironment } from '../../helpers/editor/editor';
 import { getElementById } from './document';
 
-const editorInstance = createEditor(getElementById('editor'), chrome.devtools.inspectedWindow.eval);
+const editorElement = getElementById('editor');
+const runButtonElement = getElementById('run-button');
 
-getElementById('run-button').onclick = async (): Promise<void> =>
-  await editorInstance.getAction(EditorAction.RunSnippet).run();
+setupMonacoEnvironment(window);
+const editorInstance = editor.create(editorElement, EDITOR_OPTIONS);
+const runSnippetAction = createRunSnippetAction(chrome.devtools.inspectedWindow.eval);
+editorInstance.addAction(runSnippetAction);
+
+runButtonElement.onclick = async (): Promise<void> =>
+  await editorInstance.getAction(runSnippetAction.id).run();
