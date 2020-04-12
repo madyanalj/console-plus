@@ -14,7 +14,11 @@ const runButtonElement = getElementById('run-button');
 
 setupMonacoEnvironment(window);
 const editorInstance = editor.create(editorElement, EDITOR_OPTIONS);
-const runSnippetAction = createRunSnippetAction(chrome.devtools.inspectedWindow.eval);
+const runSnippetAction = createRunSnippetAction((actionEditor) => {
+  languages.typescript.getTypeScriptWorker()
+    .then((workerGetter) => getRunnableJavaScript(workerGetter , actionEditor))
+    .then(chrome.devtools.inspectedWindow.eval);
+});
 editorInstance.addAction(runSnippetAction);
 
 runButtonElement.onclick = async (): Promise<void> =>
