@@ -19,6 +19,6 @@ describe('createElementSelector', () => {
       'foo-button': HTMLButtonElement;
     }>(getElementById);
 
-    expect(() => selector('foo-button')).toThrow('Missing element with id="foo-button"');
+    expect(() => selector('foo-button')).toThrow();
   });
 });
