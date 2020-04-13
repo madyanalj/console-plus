@@ -1,7 +1,7 @@
 import { editor, languages } from 'monaco-editor';
 import { transformCodeToLogResult } from '../../helpers/compiler';
 import { createElementSelector } from '../../helpers/document';
-import { createRunSnippetAction } from '../../helpers/editor/action';
+import { RUN_SNIPPET_ACTION_OPTIONS } from '../../helpers/editor/action';
 import { EDITOR_OPTIONS, setupMonacoEnvironment } from '../../helpers/editor/editor';
 import { getRunnableCode, getUriWorkerGetter } from '../../helpers/editor/worker';
 import { createCodeEvaluator } from './evaluator';
@@ -16,13 +16,16 @@ const runButtonElement = getElementById('run-button');
 
 setupMonacoEnvironment(window);
 const editorInstance = editor.create(editorElement, EDITOR_OPTIONS);
-const runSnippetAction = createRunSnippetAction(createCodeEvaluator(
-  editor.createModel,
-  getUriWorkerGetter(languages.typescript.getTypeScriptWorker),
-  getRunnableCode,
-  transformCodeToLogResult,
-  chrome.devtools.inspectedWindow.eval,
-));
+const runSnippetAction = {
+  ...RUN_SNIPPET_ACTION_OPTIONS,
+  run: createCodeEvaluator(
+    editor.createModel,
+    getUriWorkerGetter(languages.typescript.getTypeScriptWorker),
+    getRunnableCode,
+    transformCodeToLogResult,
+    chrome.devtools.inspectedWindow.eval,
+  ),
+};
 editorInstance.addAction(runSnippetAction);
 
 runButtonElement.onclick = async (): Promise<void> =>
