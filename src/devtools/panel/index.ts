@@ -17,6 +17,7 @@ const runButtonElement = getElementById('run-button');
 setupMonacoEnvironment(window);
 const editorInstance = editor.create(editorElement, EDITOR_OPTIONS);
 const runSnippetAction = createRunSnippetAction(createCodeEvaluator(
+  editor.createModel,
   getUriWorkerGetter(languages.typescript.getTypeScriptWorker),
   getRunnableCode,
   transformCodeToLogResult,
