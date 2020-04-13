@@ -1,9 +1,9 @@
 import { editor, languages } from 'monaco-editor';
-import { transformCodeToLogResult } from '../../helpers/compiler';
+import { RUN_SNIPPET_ACTION_OPTIONS } from '../../editor/action';
+import { EDITOR_OPTIONS, setupMonacoEnvironment } from '../../editor/setup';
+import { getRunnableCode, getUriWorkerGetter } from '../../editor/worker';
+import { transformCodeToLogResult } from '../../helpers/code';
 import { createElementSelector } from '../../helpers/document';
-import { RUN_SNIPPET_ACTION_OPTIONS } from '../../helpers/editor/action';
-import { EDITOR_OPTIONS, setupMonacoEnvironment } from '../../helpers/editor/editor';
-import { getRunnableCode, getUriWorkerGetter } from '../../helpers/editor/worker';
 import { createCodeEvaluator } from './evaluator';
 
 export const getElementById = createElementSelector<{

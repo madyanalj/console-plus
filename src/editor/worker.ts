@@ -1,5 +1,5 @@
 import { languages, Uri } from 'monaco-editor';
-import { head } from '../array';
+import { head } from '../helpers/array';
 
 export type TypeScriptWorkerGetter = typeof languages.typescript.getTypeScriptWorker;
 export type TypeScriptWorker = languages.typescript.TypeScriptWorker;

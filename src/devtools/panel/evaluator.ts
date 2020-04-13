@@ -1,6 +1,6 @@
 import { editor } from 'monaco-editor';
-import { transformCodeToLogResult } from '../../helpers/compiler';
-import { getRunnableCode, getUriWorkerGetter } from '../../helpers/editor/worker';
+import { getRunnableCode, getUriWorkerGetter } from '../../editor/worker';
+import { transformCodeToLogResult } from '../../helpers/code';
 import { ensureNonNullable } from '../../helpers/type';
 
 export const createCodeEvaluator = (

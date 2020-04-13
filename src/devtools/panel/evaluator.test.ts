@@ -1,5 +1,5 @@
 import { editor } from 'monaco-editor';
-import { TypeScriptWorker } from '../../helpers/editor/worker';
+import { TypeScriptWorker } from '../../editor/worker';
 import { createCodeEvaluator } from './evaluator';
 
 describe('createCodeEvaluator', () => {

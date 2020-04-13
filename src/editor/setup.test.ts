@@ -1,4 +1,4 @@
-import { setupMonacoEnvironment } from './editor';
+import { setupMonacoEnvironment } from './setup';
 
 test('setupMonacoEnvironment', () => {
   const window = {} as Window;

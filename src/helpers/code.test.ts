@@ -1,4 +1,4 @@
-import { transformCodeToLogResult } from './compiler';
+import { transformCodeToLogResult } from './code';
 
 test('transformCodeToLogResult', () => {
   const code = 'const foo = "Hello"; `${foo} +  world!`';
