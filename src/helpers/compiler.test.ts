@@ -1,5 +1,5 @@
 import { editor, languages } from 'monaco-editor';
-import { getRunnableJavaScript, TypeScriptWorkerGetter } from './compiler';
+import { getRunnableJavaScript, transformCodeToLogResult, TypeScriptWorkerGetter } from './compiler';
 
 type TypeScriptWorker = languages.typescript.TypeScriptWorker;
 type getEmitOutput = TypeScriptWorker['getEmitOutput'];
@@ -24,4 +24,12 @@ describe('getRunnableJavaScript', () => {
     expect(() => getRunnableJavaScript(jest.fn(), instance))
       .toThrow('editorInstance passed must have a model');
   });
+});
+
+test('transformCodeToLogResult', () => {
+  const code = 'const foo = "Hello"; `${foo} +  world!`';
+
+  const result = transformCodeToLogResult(code);
+
+  expect(result).toBe('console.log(eval("const foo = \\"Hello\\"; `${foo} +  world!`"))');
 });
