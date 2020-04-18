@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#editor {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.toolbar {
+  font-size: 12px;
+  text-align: right;
+
+  color: #bdc6cf;
+  background-color: #333333;
+}
+
+.toolbar__button {
+  font-size: inherit;
+  margin: 4px 5px;
+
+  color: inherit;
+  background: none;
+  opacity: 0.8;
+  border: none;
+  outline: none;
+}
+
+.toolbar__button:hover {
+  opacity: 1;
+}
