@@ -14,5 +14,6 @@ module.exports = {
     semi: ['error', 'always'],
     quotes: ['error', 'single'],
     'comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
   },
 };

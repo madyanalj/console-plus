@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
+    "noUnusedParameters": true,
     "lib": ["dom", "ES2020"]
   }
 }
