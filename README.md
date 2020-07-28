@@ -3,6 +3,8 @@ Chrome extension which allows developers to run TypeScript code right from their
 
 ![Demo](demo.png)
 
+🗃 [Download from the Chrome Web Store](https://chrome.google.com/webstore/detail/console%20/mdpcfmohggcepdncbognlniaiefdpnnf)
+
 ## Stack
 TypeScript | Monaco Editor | Node v13 | Chrome Extension API | Parcel.js | ESLint | Jest
 
